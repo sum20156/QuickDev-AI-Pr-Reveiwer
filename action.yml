@@ -1,54 +1,56 @@
+name: "QuickDev-Pr-Reveiwer"
+description: "Review PR using the power of AI"
+author: "Suman Mondal"
+branding:
+  color: "blue"
+  icon: "check-circle"
 
-name: QuickDev-Pr-Reveiwer
-description: 'Review Pr using the power of AI'
+inputs:
+  standards:
+    description: "Coding standards to follow"
+    required: true
+    type: string
+  target_extensions:
+    description: "File extensions to target"
+    required: true
+    type: string
+  gemini_api_key:
+    description: "API key for the Gemini service"
+    required: true
+    type: string
 
-on:
-  workflow_call:
-    inputs:
-      standards:
-        required: true
-        type: string
-      target_extensions:
-        required: true
-        type: string
-      gemini_api_key:
-        required: true
-        type: string
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
-jobs:
-  ai_pr_reviewer:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.x"
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+    - name: Install dependencies
+      run: pip install -r "${{ github.action_path }}/.ai/requirements.txt"
 
-      - name: Install dependencies
-        run: pip install -r "${{ github.action_path }}/.ai/requirements.txt"
-      
-      - name: Run Reviewer Script
-        env:
-          GITHUB_HEAD_REF: ${{ github.head_ref }}
-          GITHUB_BASE_REF: ${{ github.base_ref }}
-          GEMINI_KEY: ${{ inputs.gemini_api_key }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TARGET_EXTENSIONS: ${{ inputs.target_extensions }}
-          REPO_OWNER: ${{ github.repository_owner }}
-          REPO_NAME: ${{ github.event.repository.name }}
-          PULL_NUMBER: ${{ github.event.number }}
-          STANDARDS: ${{ inputs.standards }}
-        run: |
-          python "${{ github.action_path }}/.ai/github_reviewer.py"
+    - name: Run Reviewer Script
+      env:
+        GITHUB_HEAD_REF: ${{ github.head_ref }}
+        GITHUB_BASE_REF: ${{ github.base_ref }}
+        GEMINI_KEY: ${{ inputs.gemini_api_key }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TARGET_EXTENSIONS: ${{ inputs.target_extensions }}
+        REPO_OWNER: ${{ github.repository_owner }}
+        REPO_NAME: ${{ github.event.repository.name }}
+        PULL_NUMBER: ${{ github.event.number }}
+        STANDARDS: ${{ inputs.standards }}
+      run: python "${{ github.action_path }}/.ai/github_reviewer.py"
 
-      - name: Upload result as an artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: AI-requests
-          path: output.txt
-          retention-days: 1
+    - name: Upload result as an artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: AI-requests
+        path: output.txt
+        retention-days: 1
