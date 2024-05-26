@@ -16,8 +16,7 @@ class EnvVars:
         self.base_ref = os.getenv('GITHUB_BASE_REF') 
         self.head_ref = os.getenv('GITHUB_HEAD_REF') 
 
-        self.chat_gpt_token = os.getenv('CHATGPT_KEY') 
-        self.chat_gpt_model = os.getenv('CHATGPT_MODEL') 
+        self.gemini_token = os.getenv('GEMINI_KEY') 
 
         self.target_extensions = os.getenv('TARGET_EXTENSIONS')
         self.target_extensions = [lang.strip() for lang in self.target_extensions.split(",")]
@@ -31,8 +30,7 @@ class EnvVars:
             "token" : self.token,
             "base_ref" : self.base_ref,
             "pull_number" : self.pull_number,
-            "chat_gpt_token" : self.chat_gpt_token,
-            "chat_gpt_model" : self.chat_gpt_model,
+            "gemini_token" : self.gemini_token,
         }
 
     def check_vars(self):

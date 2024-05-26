@@ -9,7 +9,7 @@ class AiBot(ABC):
     
     __no_response = "No critical issues found"
     __problems="errors, issues, potential crashes or unhandled exceptions"
-    __chat_gpt_ask_long="""
+    __gemini_ask_long="""
 Could you describe briefly {problems} for the next code with given git diffs? 
 Please, also, do not add intro words, just print errors in the format: "line_number : cause effect"
 If there are no {problems} just say "{no_response}".
@@ -29,7 +29,7 @@ Full code from the file:
 
     @staticmethod
     def build_ask_text(code, diffs) -> str:
-        return AiBot.__chat_gpt_ask_long.format(
+        return AiBot.__gemini_ask_long.format(
             problems = AiBot.__problems,
             no_response = AiBot.__no_response,
             diffs = diffs,

@@ -2,11 +2,16 @@
 # Version 2.0, January 2004
 # Author: Eugene Tkachenko
 
-name: Pull Request ChatGPT review
+name: Pull Request Reviewer
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      gemini_api_key:
+        description: 'API Key for gemini'
+        required: true
+        default: ''
+    
 
 jobs:
   ai_pr_reviewer:
@@ -23,21 +28,20 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install -r .ai/io/nerdythings/requirements.txt
+        run: pip install -r .ai/requirements.txt
       
       - name: Run Reviewer Script
         env:
           GITHUB_HEAD_REF: ${{ github.head_ref }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
-          CHATGPT_KEY: ${{ secrets.CHATGPT_KEY }}
-          CHATGPT_MODEL: ${{ secrets.CHATGPT_MODEL }}
+          GEMINI_KEY: ${{ github.event.inputs.example_input }}
           GITHUB_TOKEN: ${{ secrets.API_KEY }}
           TARGET_EXTENSIONS: ${{ vars.TARGET_EXTENSIONS }}
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
           PULL_NUMBER: ${{ github.event.number }}
         run: |
-          python .ai/io/nerdythings/github_reviewer.py
+          python .ai/github_reviewer.py
 
       - name: Upload result as an artifact
         uses: actions/upload-artifact@v4

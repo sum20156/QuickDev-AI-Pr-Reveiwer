@@ -5,7 +5,7 @@
 import os
 from git import Git 
 from pathlib import Path
-from ai.chat_gpt import ChatGPT
+from ai.gemini import Gemini
 from ai.ai_bot import AiBot
 from log import Log
 from env_vars import EnvVars
@@ -19,7 +19,7 @@ def main():
     vars = EnvVars()
     vars.check_vars()
 
-    ai = ChatGPT(vars.chat_gpt_token, vars.chat_gpt_model)
+    ai = Gemini(vars.gemini_token)
     github = GitHub(vars.token, vars.owner, vars.repo, vars.pull_number)
 
     remote_name = Git.get_remote_name()
