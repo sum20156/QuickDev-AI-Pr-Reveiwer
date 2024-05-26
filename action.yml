@@ -1,5 +1,6 @@
 
-name: Pull Request Reviewer
+name: QuickDev Pr Reviwer
+description: 'Review Pr using the power of AI'
 
 on:
   workflow_call:
