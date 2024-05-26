@@ -18,7 +18,7 @@ inputs:
     description: "API key for the Gemini service"
     required: true
     type: string
-  github_toke:
+  github_token:
     description: "Github token"
     required: true
     type: string
