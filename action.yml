@@ -18,6 +18,10 @@ inputs:
     description: "API key for the Gemini service"
     required: true
     type: string
+  github_toke:
+    description: "Github token"
+    required: true
+    type: string
 
 runs:
   using: "composite"
@@ -34,19 +38,23 @@ runs:
 
     - name: Install dependencies
       run: pip install -r "${{ github.action_path }}/.ai/requirements.txt"
+      shell: bash
+
 
     - name: Run Reviewer Script
       env:
         GITHUB_HEAD_REF: ${{ github.head_ref }}
         GITHUB_BASE_REF: ${{ github.base_ref }}
         GEMINI_KEY: ${{ inputs.gemini_api_key }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
         TARGET_EXTENSIONS: ${{ inputs.target_extensions }}
         REPO_OWNER: ${{ github.repository_owner }}
         REPO_NAME: ${{ github.event.repository.name }}
         PULL_NUMBER: ${{ github.event.number }}
         STANDARDS: ${{ inputs.standards }}
       run: python "${{ github.action_path }}/.ai/github_reviewer.py"
+      shell: bash
+
 
     - name: Upload result as an artifact
       uses: actions/upload-artifact@v4
