@@ -5,7 +5,7 @@
 name: Pull Request Reviewer
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       gemini_api_key:
         description: 'API Key for gemini'
@@ -35,7 +35,7 @@ jobs:
           GITHUB_HEAD_REF: ${{ github.head_ref }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
           GEMINI_KEY: ${{ github.event.inputs.example_input }}
-          GITHUB_TOKEN: ${{ secrets.API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TARGET_EXTENSIONS: ${{ vars.TARGET_EXTENSIONS }}
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
