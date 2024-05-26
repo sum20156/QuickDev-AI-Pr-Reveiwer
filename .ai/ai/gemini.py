@@ -7,29 +7,20 @@ import pathlib
 import textwrap
 
 import google.generativeai as genai
-
-from IPython.display import display
-from IPython.display import Markdown
 from ai.ai_bot import AiBot
-from google.colab import userdata
 
 
-
-def to_markdown(text):
-  text = text.replace('•', '  *')
-  return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
 
 class Gemini(AiBot):
 
 
     def __init__(self, token):
-        GOOGLE_API_KEY=userdata.get(token)
-        genai.configure(api_key=GOOGLE_API_KEY)
-        model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        genai.configure(api_key=token)
+        self.__model = genai.GenerativeModel('gemini-1.5-pro-latest')
 
     def ai_request_diffs(self, code, diffs):
-        stream = model.start_chat(
+        stream = self.__model.start_chat(
             history=[
                 {
                     "role": "user",
