@@ -1,13 +1,18 @@
-# Apache License
-# Version 2.0, January 2004
-# Author: Eugene Tkachenko
 
 name: Pull Request Reviewer
 
 on:
   workflow_call:
-
-    
+    inputs:
+      standards:
+        required: true
+        type: string
+      target_extensions:
+        required: true
+        type: string
+    secrets:
+      gemini_api_key:
+        required: true
 
 jobs:
   ai_pr_reviewer:
@@ -24,20 +29,21 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install -r .ai/requirements.txt
+        run: pip install -r "${{ github.action_path }}/.ai/requirements.txt"
       
       - name: Run Reviewer Script
         env:
           GITHUB_HEAD_REF: ${{ github.head_ref }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
-          GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_KEY: ${{ secrets.gemini_api_key }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TARGET_EXTENSIONS: ${{ vars.TARGET_EXTENSIONS }}
+          TARGET_EXTENSIONS: ${{ inputs.target_extensions }}
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
           PULL_NUMBER: ${{ github.event.number }}
+          STANDARDS: ${{ inputs.standards }}
         run: |
-          python .ai/github_reviewer.py
+          python "${{ github.action_path }}/.ai/github_reviewer.py"
 
       - name: Upload result as an artifact
         uses: actions/upload-artifact@v4

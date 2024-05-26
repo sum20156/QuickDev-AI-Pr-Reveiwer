@@ -19,7 +19,7 @@ def main():
     vars = EnvVars()
     vars.check_vars()
 
-    ai = Gemini(vars.gemini_token)
+    ai = Gemini(vars.gemini_token,vars.standards)
     github = GitHub(vars.token, vars.owner, vars.repo, vars.pull_number)
 
     remote_name = Git.get_remote_name()
@@ -56,6 +56,8 @@ def main():
         
         Log.print_green(f"Asking AI. Content Len:{len(file_content)} Diff Len: {len(file_diffs)}")
         response = ai.ai_request_diffs(code=file_content, diffs=file_diffs)
+        Log.print_green("Gemini Response", response)
+
 
         log_file.write(f"{separator}{file_content}{separator}{file_diffs}{separator}{response}{separator}")
 

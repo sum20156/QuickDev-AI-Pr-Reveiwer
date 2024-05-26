@@ -19,6 +19,7 @@ class EnvVars:
         self.gemini_token = os.getenv('GEMINI_KEY') 
 
         self.target_extensions = os.getenv('TARGET_EXTENSIONS')
+        self.standards = os.getenv("STANDARDS")
         self.target_extensions = [lang.strip() for lang in self.target_extensions.split(",")]
 
         if len(self.target_extensions) == 0:
@@ -31,6 +32,7 @@ class EnvVars:
             "base_ref" : self.base_ref,
             "pull_number" : self.pull_number,
             "gemini_token" : self.gemini_token,
+            "standards": self.standards
         }
 
     def check_vars(self):

@@ -15,20 +15,15 @@ from ai.ai_bot import AiBot
 class Gemini(AiBot):
 
 
-    def __init__(self, token):
+    def __init__(self, token,standards):
         genai.configure(api_key=token)
         self.__model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        self.__standards = standards
+        self.__chat = self.__model.start_chat(history=[])
 
     def ai_request_diffs(self, code, diffs):
-        stream = self.__model.start_chat(
-            history=[
-                {
-                    "role": "user",
-                    "content": AiBot.build_ask_text(code=code, diffs=diffs),
-                }
-            ],
-            stream = True,
-        )
+
+        stream = self.__chat.send_message(AiBot.build_ask_text(code=code, diffs=diffs,standards=self.__standards),stream = True)
         content = []
         for chunk in stream:
             if chunk.text:

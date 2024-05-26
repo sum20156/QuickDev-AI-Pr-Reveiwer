@@ -4,14 +4,15 @@
 
 from abc import ABC, abstractmethod
 from ai.line_comment import LineComment
+from log import Log
 
 class AiBot(ABC):
     
     __no_response = "No critical issues found"
     __problems="errors, issues, potential crashes or unhandled exceptions"
     __gemini_ask_long="""
-Could you describe briefly {problems} for the next code with given git diffs? 
-Please, also, do not add intro words, just print errors in the format: "line_number : cause effect"
+Act as a senior software engineer who is responsible for doing PR reviews, Could you describe briefly {problems} for the next code with given git diffs?. Be strict about these areas if applicable: "{standards}"
+Please, also, do not add intro words, just print errors in the format: "line number : cause effect"
 If there are no {problems} just say "{no_response}".
 
 DIFFS:
@@ -28,12 +29,14 @@ Full code from the file:
         pass
 
     @staticmethod
-    def build_ask_text(code, diffs) -> str:
+    def build_ask_text(code, diffs, standards) -> str:
+        Log.print_green("Standards", standards)
         return AiBot.__gemini_ask_long.format(
             problems = AiBot.__problems,
             no_response = AiBot.__no_response,
             diffs = diffs,
             code = code,
+            standards=standards,
         )
 
     @staticmethod
