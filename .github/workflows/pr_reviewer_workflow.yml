@@ -29,7 +29,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install -r "${{ github.action_path }}/.ai/requirements.txt"
+        run: pip install -r "sum20156/pr-reviewer/.github/workflows/.ai/requirements.txt@master"
       
       - name: Run Reviewer Script
         env:
@@ -43,7 +43,7 @@ jobs:
           PULL_NUMBER: ${{ github.event.number }}
           STANDARDS: ${{ inputs.standards }}
         run: |
-          python "${{ github.action_path }}/.ai/github_reviewer.py"
+          python "sum20156/pr-reviewer/.github/workflows/.ai/github_reviewer.py@master"
 
       - name: Upload result as an artifact
         uses: actions/upload-artifact@v4
