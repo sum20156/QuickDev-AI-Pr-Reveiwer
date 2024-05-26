@@ -13,6 +13,7 @@ on:
         type: string
       gemini_api_key:
         required: true
+        type: string
 
 jobs:
   ai_pr_reviewer:
