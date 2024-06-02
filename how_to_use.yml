@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: sum20156/pr-reviewer@master
+        uses: sum20156/QuickDev-AI-Pr-Reveiwer@master
         with:
           standards: "Check memory leaks, function lines should not exceed 15" #list of code quality standards you follow
           target_extensions: "kt,xml" #only for these extensions code quality will be checked
