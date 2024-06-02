@@ -12,7 +12,7 @@ jobs:
       - name: Checkout code
         uses: sum20156/QuickDev-AI-Pr-Reveiwer@master
         with:
-          standards: "Check memory leaks, function lines should not exceed 15" #list of code quality standards you follow
+          standards: "every function should have code comments describing what its doing, name of boolean variables should have prefixes like is, has, can, or should" #list of code quality standards you follow
           target_extensions: "kt,xml" #only for these extensions code quality will be checked
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }} #Currently it uses gemini Ai
           github_token:  ${{ secrets.GITHUB_TOKEN }}
