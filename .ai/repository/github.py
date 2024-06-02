@@ -23,7 +23,7 @@ class GitHub(Repository):
             "body": text,
             "commit_id": commit_id,
             "path" : file_path,
-            "position" : line
+            "line" : line
         }
         response = requests.post(self.__url_add_comment, json = body, headers = headers)
         if response.status_code == 200 or response.status_code == 201:
