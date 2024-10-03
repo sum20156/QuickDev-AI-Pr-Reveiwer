@@ -11,9 +11,8 @@ class AiBot(ABC):
     __no_response = "No critical issues found"
     __problems="errors, issues, potential crashes or unhandled exceptions"
     __gemini_ask_long="""
-Act as a senior software engineer who is responsible for doing PR reviews, Could you describe briefly {problems} for the next code with given git diffs?. Be strict about these areas if applicable: "{standards}"
-Please, also, do not add intro words, just print errors in the format: "line number : cause effect"
-If there are no {problems} just say "{no_response}".
+Act as a senior software engineer who is responsible for doing PR reviews, Review the below code with given git diffs and briefly describe {problems} etc?. Be strict about these areas if applicable: "{standards}" . While giving response, do not add intro words, response format should be: "line number : cause effect"
+If there are no issues just say "{no_response}".
 
 DIFFS:
 
