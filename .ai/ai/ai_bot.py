@@ -68,7 +68,7 @@ Full code from the file:
                         break
 
             if number_str:
-                number = int(number_str)
+                number = int(number_str.replace(" ", ""))
 
             models.append(LineComment(line = number, text = full_text))
         return models
