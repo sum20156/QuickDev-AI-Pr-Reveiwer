@@ -5,6 +5,7 @@
 import os
 import pathlib
 import textwrap
+from log import Log
 
 import google.generativeai as genai
 from ai.ai_bot import AiBot
@@ -22,8 +23,9 @@ class Gemini(AiBot):
         self.__chat = self.__model.start_chat(history=[])
 
     def ai_request_diffs(self, code, diffs):
-
-        stream = self.__chat.send_message(AiBot.build_ask_text(code=code, diffs=diffs,standards=self.__standards),stream = True)
+        prompt=AiBot.build_ask_text(code=code, diffs=diffs,standards=self.__standards)
+        Log.print_yellow("Gemini Prompt",prompt)
+        stream = self.__chat.send_message(prompt,stream = True)
         content = []
         for chunk in stream:
             if chunk.text:
