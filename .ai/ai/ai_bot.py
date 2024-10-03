@@ -46,30 +46,32 @@ Full code from the file:
     
     @staticmethod
     def split_ai_response(input) -> list[LineComment]:
-        if input is None or not input:
+        if input is None or not input.strip():
             return []
         
         lines = input.strip().split("\n")
         models = []
 
         for full_text in lines:
-            number_str = ''
-            number = 0
             full_text = full_text.strip()
-            if len( full_text ) == 0:
+            if len(full_text) == 0:
                 continue
 
-            reading_number = True
-            for char in full_text.strip():
-                if reading_number:
-                    if char.isdigit():
-                        number_str += char
-                    else:
-                        break
+            # Use regex to find the number at the beginning, followed by a colon
+            match = re.match(r'(\d+(?:\s\d+)*):', full_text)
+            if match:
+                # Extract the line number
+                number_str = match.group(1).replace(" ", "")
+                number = int(number_str)
+                
+                # Extract the text after the line number and colon
+                text = full_text[match.end():].strip()
+            else:
+                # If no match is found, default to line 0
+                number = 0
+                text = full_text
 
-            if number_str:
-                number = int(number_str.replace(" ", ""))
-
-            models.append(LineComment(line = number, text = full_text))
+            models.append(LineComment(line=number, text=text))
+        
         return models
     
