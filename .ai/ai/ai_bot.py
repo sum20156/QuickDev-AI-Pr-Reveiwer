@@ -58,10 +58,10 @@ Full code from the file:
             if len(full_text) == 0:
                 continue
 
-            # Use regex to find the number at the beginning, followed by a colon
-            match = re.match(r'(\d+(?:\s\d+)*):', full_text)
+            # Use regex to find the number at the beginning, followed by optional text and a colon
+            match = re.match(r'^(\d+(?:\s\d+)*)(?:,.*)?:', full_text)
             if match:
-                # Extract the line number
+                # Extract the line number, taking only the first part before any comma
                 number_str = match.group(1).replace(" ", "")
                 number = int(number_str)
                 
