@@ -41,7 +41,12 @@ def main():
 
         try:
             with open(file, 'r') as file_opened:
-                file_content = file_opened.read()
+                file_content_without_line_numbers = file_opened.readlines()
+                file_content_with_lines = []
+            for line_number, line in enumerate(file_content_without_line_numbers, start=1):
+                file_content_with_lines.append(f"{line_number}: {line}")
+
+            file_content= ''.join(file_content)
         except FileNotFoundError:
             Log.print_yellow("File was removed. Continue.", file)
             continue
