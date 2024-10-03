@@ -39,6 +39,7 @@ def main():
             Log.print_yellow(f"Skipping, unsuported extension {file_extension} file {file}")
             continue
 
+        file_content = ""
         try:
             with open(file, 'r') as file_opened:
                 file_content_without_line_numbers = file_opened.readlines()
