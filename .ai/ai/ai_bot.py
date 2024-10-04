@@ -49,7 +49,7 @@ Full code from the file:
     def split_ai_response(input) -> list[LineComment]:
         if input is None or not input.strip():
             return []
-        
+
         lines = input.strip().split("\n")
         models = []
 
@@ -58,10 +58,10 @@ Full code from the file:
             if len(full_text) == 0:
                 continue
 
-            # Use regex to find the number at the beginning, followed by optional text and a colon
-            match = re.match(r'^(\d+(?:\s\d+)*)(?:,.*)?:', full_text)
+            # Use regex to find the first number or sequence of numbers separated by spaces, followed by optional text and a colon
+            match = re.match(r'^(\d+(?:\s\d+)*)(?:\s*:\s*)?', full_text)
             if match:
-                # Extract the line number, taking only the first part before any comma
+                # Extract the line number, taking only the first part before any additional text
                 number_str = match.group(1).replace(" ", "")
                 number = int(number_str)
                 
@@ -73,6 +73,6 @@ Full code from the file:
                 text = full_text
 
             models.append(LineComment(line=number, text=text))
-        
+
         return models
     

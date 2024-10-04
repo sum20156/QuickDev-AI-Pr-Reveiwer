@@ -102,7 +102,7 @@ def post_general_comment(github: GitHub, file: str, text:str,line:int) -> bool:
     Log.print_green("Posting general", file, text)
     try:
         message = f"{file}\n{text}"
-        git_response = github.post_comment_general("Line:"+str(line)+" "+message)
+        git_response = github.post_comment_general("Line "+str(line)+": "+message)
         Log.print_yellow("Posted general", git_response)
         return True
     except RepositoryError:
